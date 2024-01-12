@@ -119,11 +119,11 @@ function BBBDasboard() {
             selector.append('option').text(sampleId).property('value', sampleId);
         };
 
-        // Add event listener to the dropdown menu
+        // Dropdown menu
         selector.on('change', function() {
             let selectedValue = selector.property('value');
             console.log(`change ID: ${selectedValue}`);
-            // Call New_opt with the selected value to update the graphs
+            // Update graphs
             New_opt(selectedValue);
         });
 
