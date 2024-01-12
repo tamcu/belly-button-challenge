@@ -3,14 +3,14 @@ console.log('app.js');
 
 const url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json'
 
-function Bar(Id) {
-    console.log(`Bar(${Id})`);
+function Bar(sampleId) {
+    console.log(`Bar(${sampleId})`);
 
     d3.json(url).then(data => {
         console.log(data);
 
         let samples = data.samples;
-        let A = samples.filter(s => s.id == Id);
+        let A = samples.filter(s => s.id == sampleId);
         let result = A[0];
 
         let otu_ids = result.otu_ids;
@@ -63,7 +63,7 @@ function Bubble(sampleId) {
             }
         }
 
-        let bubbleArray = [bubbleData];
+        let bubArray = [bubbleData];
 
         
         let bubbleLayout = {
@@ -72,7 +72,7 @@ function Bubble(sampleId) {
         };
 
         
-        Plotly.newPlot('bubble', bubbleArray, bubbleLayout);
+        Plotly.newPlot('bubble', bubArray, bubbleLayout);
     })
 }
 
@@ -94,12 +94,13 @@ function Meta(sampleId) {
     });
 }
 
-function New_opt(id) {
-    console.log(`New_opt, new value: ${id}`);
+function New_opt(sampleId) {
+    console.log(`New_opt, new value: ${sampleId}`);
 
-    Bar(id);
-    Bubble(id);
-    Meta(id);
+    Bar(sampleId);
+    Bubble(sampleId);
+    Meta(sampleId);
+    DrawGauge(sampleId);
 }
 
 function BBBDasboard() {
@@ -118,18 +119,18 @@ function BBBDasboard() {
             selector.append('option').text(sampleId).property('value', sampleId);
         };
 
-        // Menu dropdown
-        let FId = selector.property('value');
-        console.log(`initialId = ${FId}`);
+        // Add event listener to the dropdown menu
+        selector.on('change', function() {
+            let selectedValue = selector.property('value');
+            console.log(`change ID: ${selectedValue}`);
+            // Call New_opt with the selected value to update the graphs
+            New_opt(selectedValue);
+        });
 
-       //Graphs
-        Bar(FId);
-        Bubble(FId);
-        Meta(FId);
+        
+        New_opt(selector.property('value'));
 
     });
-
-    
 
 
 }
